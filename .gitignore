@@ -1,0 +1,11 @@
+modelsim.ini
+*.log
+*~
+~*
+*.swp
+Output_Results/
+qcache/
+work/
+qverify_ui_cmds.tcl
+.visualizer/
+.qverify_ui_local_prefs

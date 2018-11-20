@@ -1,0 +1,5 @@
+$default_clock clk
+$default_input_value 0
+resetb = 1'b0
+##
+resetb = 1'b1
