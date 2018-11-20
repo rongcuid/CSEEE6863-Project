@@ -151,12 +151,6 @@ module mmu(
       end
    end
 
-dmmap_im: assert property (@(posedge clk) dm_addr < 32'h1000 |=> chosen_device_p == DEV_IM);
-dmmap_dm: assert property (@(posedge clk) dm_addr >= 32'h10000000 && dm_addr < 32'h80000000
-	|=> chosen_device_p == DEV_DM);
-dmmap_io: assert property (@(posedge clk) dm_addr >= 32'h80000000 && dm_addr < 32'h80000100
-	|=> chosen_device_p == DEV_IO);
-
    reg [31:0] 		    ram_addr_temp, io_addr_temp;
    // Device mapping from address
    // Note: X-Optimism might be a problem. Convert to Tertiary to fix
@@ -274,4 +268,35 @@ dmmap_io: assert property (@(posedge clk) dm_addr >= 32'h80000000 && dm_addr < 3
       end
    end
    
+dmmap_im: assert property (@(posedge clk) dm_addr < 32'h1000 |=> chosen_device_p == DEV_IM);
+dmmap_dm: assert property (@(posedge clk) dm_addr >= 32'h10000000 && dm_addr < 32'h80000000
+	|=> chosen_device_p == DEV_DM);
+dmmap_io: assert property (@(posedge clk) dm_addr >= 32'h80000000 && dm_addr < 32'h80000100
+	|=> chosen_device_p == DEV_IO);
+
+write_disable_doesnot_write: assert property (
+	@(posedge clk)
+	!dm_we |=> 
+		$stable(ram0.RAM) and
+		$stable(ram1.RAM) and
+		$stable(ram2.RAM) and
+		$stable(ram3.RAM) and
+		!io_we
+	);
+
+be_no_spurious_enable_0: assert property(@(posedge clk)!dm_be[0]|->!ram0.en);
+be_no_spurious_enable_1: assert property(@(posedge clk)!dm_be[1]|->!ram1.en);
+be_no_spurious_enable_2: assert property(@(posedge clk)!dm_be[2]|->!ram2.en);
+be_no_spurious_enable_3: assert property(@(posedge clk)!dm_be[3]|->!ram3.en);
+
+be_no_spurious_write_0: assert property(@(posedge clk)!dm_be[0]|=>$stable(ram0.RAM));
+be_no_spurious_write_1: assert property(@(posedge clk)!dm_be[1]|=>$stable(ram1.RAM));
+be_no_spurious_write_2: assert property(@(posedge clk)!dm_be[2]|=>$stable(ram2.RAM));
+be_no_spurious_write_3: assert property(@(posedge clk)!dm_be[3]|=>$stable(ram3.RAM));
+
+io_no_spurious_read_01: assert property (
+	@(posedge clk) 
+	chosen_device_tmp != DEV_IO |=> !io_en
+	);
+
 endmodule // mmu
