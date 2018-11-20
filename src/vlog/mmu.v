@@ -151,10 +151,10 @@ module mmu(
       end
    end
 
-dmmap_im: assert property (@(posedge clk) dm_addr[31:12] == 20'b0 |=> chosen_device_p == DEV_IM);
-dmmap_dm: assert property (@(posedge clk) dm_addr[31] == 1'b0 && dm_addr[30:28] != 3'b0 
+dmmap_im: assert property (@(posedge clk) dm_addr < 32'h1000 |=> chosen_device_p == DEV_IM);
+dmmap_dm: assert property (@(posedge clk) dm_addr >= 32'h10000000 && dm_addr < 32'h80000000
 	|=> chosen_device_p == DEV_DM);
-dmmap_io: assert property (@(posedge clk) dm_addr[31:8] == 24'h800000
+dmmap_io: assert property (@(posedge clk) dm_addr >= 32'h80000000 && dm_addr < 32'h80000100
 	|=> chosen_device_p == DEV_IO);
 
    reg [31:0] 		    ram_addr_temp, io_addr_temp;
