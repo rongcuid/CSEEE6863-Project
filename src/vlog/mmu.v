@@ -294,9 +294,6 @@ be_no_spurious_write_1: assert property(@(posedge clk)!dm_be[1]|=>$stable(ram1.R
 be_no_spurious_write_2: assert property(@(posedge clk)!dm_be[2]|=>$stable(ram2.RAM));
 be_no_spurious_write_3: assert property(@(posedge clk)!dm_be[3]|=>$stable(ram3.RAM));
 
-io_no_spurious_read_01: assert property (
-	@(posedge clk) 
-	chosen_device_tmp != DEV_IO |=> !io_en
-	);
+io_no_spurious_read_01: assert property (@(posedge clk)chosen_device_tmp!=DEV_IO|=>!io_en);
 
 endmodule // mmu
