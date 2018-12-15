@@ -284,18 +284,36 @@ write_disable_doesnot_write: assert property (
 		!io_we
 	);
 
-   integer changed;
-   integer i;
-   always @ (posedge clk) begin : COUNT_CHANGE
-      changed = 0;
-      for (i = 0; i<256; i = i+1)
-	changed = changed + (($changed(ram0.RAM[i]))?1:0);
-   end
-at_most_one_write_0: assert property 
-   (
-    @(posedge clk)
-    $stable(ram0.RAM) or changed == 1;
-);
+   // integer num_changed;
+   // integer i;
+   // reg 	   past_valid = 1'b0;
+   // always @ (posedge clk)
+   //   past_valid <= 1'b1;
+
+   // always @ (posedge clk) begin : COUNT_CHANGE
+   //    num_changed = 0;
+   //    for (i = 0; i<256; i = i+1)
+   // 	num_changed = num_changed + (($changed(ram0.RAM[i]))?1:0);
+   //    at_most_one_write_0: assert property
+   // 	 (~past_valid or ($stable(ram0.RAM) or num_changed == 1));
+   // end
+   
+
+// at_most_one_write_1: assert property 
+//    (
+//     @(posedge clk)
+//     $stable(ram1.RAM) or changed == 1
+// );
+// at_most_one_write_2: assert property 
+//    (
+//     @(posedge clk)
+//     $stable(ram2.RAM) or changed == 1
+// );
+// at_most_one_write_3: assert property 
+//    (
+//     @(posedge clk)
+//     $stable(ram3.RAM) or changed == 1
+// );
 
 be_no_spurious_enable_0: assert property(@(posedge clk)!dm_be[0]|->!ram0.en);
 be_no_spurious_enable_1: assert property(@(posedge clk)!dm_be[1]|->!ram1.en);

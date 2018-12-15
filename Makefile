@@ -20,7 +20,7 @@ compile:
 	$(VMAP) work work
 	#$(VLOG) ./src/vlog/wb_arbiter.v -pslfile ./src/assertions/arbiter_vlog.psl
 	$(VLOG) -sv -mfcu -cuname mmu_sva \
-		./src/vlog/BRAM_SSP.v ./src/vlog/mmu.v
+		./src/vlog/BRAM_SSP.v ./src/vlog/mmu.sv
 	#$(VLOG) -sv -mfcu -cuname my_bind_ovl \
 	#	./src/assertions/ovl_bind.sv ./src/assertions/ovl_arbiter.sv \
 	#	+libext+.v+.sv -y ${QHOME}/share/assertion_lib/OVL/verilog \
