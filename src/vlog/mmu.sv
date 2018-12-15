@@ -294,8 +294,7 @@ write_disable_doesnot_write: assert property (
 at_most_one_write_0: assert property 
    (
     @(posedge clk)
-    dm_we && dm_be[0] |=>
-    changed == 1;
+    $stable(ram0.RAM) or changed == 1;
 );
 
 be_no_spurious_enable_0: assert property(@(posedge clk)!dm_be[0]|->!ram0.en);
