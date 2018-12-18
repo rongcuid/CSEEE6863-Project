@@ -286,9 +286,9 @@ write_disable_doesnot_write: assert property (
 
    // integer num_changed;
    // integer i;
-   // reg 	   past_valid = 1'b0;
-   // always @ (posedge clk)
-   //   past_valid <= 1'b1;
+   reg 	   past_valid = 1'b0;
+   always @ (posedge clk)
+     past_valid <= 1'b1;
 
    // always @ (posedge clk) begin : COUNT_CHANGE
    //    num_changed = 0;
@@ -363,4 +363,16 @@ write_then_output_the_shifted_signed_value_0100 : assert property (@(posedge clk
 
 write_then_output_the_shifted_signed_value_1000 : assert property (@(posedge clk) dm_di==32'h000000ff && dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && is_signed && dm_be == 4'b1000 |=> dm_do==32'hffffffff);
 
+// Inspired by https://zipcpu.com/zipcpu/2018/07/13/memories.html
+//reg [WORD_DEPTH_LOG-1:0] f_addr;
+//
+//reg [7:0] f_data0;
+//initial f_data0 = ram0.RAM[f_addr];
+//
+//always @ (posedge clk) 
+//if (ram0.en&&ram0.we && ram0.addr==f_addr) f_data0 <= ram0.din;
+//
+//ram0_consistency: assert property (@(posedge clk) f_data0 == ram0.RAM[f_addr]);
+
 endmodule // mmu
+
