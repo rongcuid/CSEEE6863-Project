@@ -33,7 +33,7 @@ formal:
 		do qs_files/directives.tcl; \
 		formal compile -d mmu; \
 		formal verify -init qs_files/mmu.init \
-		-timeout 5m; \
+		-timeout 20s; \
 		exit"
 #do qs_files/directives.tcl -cuname my_bind_sva;
 
