@@ -367,7 +367,13 @@ write_then_read_4c: cover  property (@(posedge clk) dm_we && dm_addr >= 32'h1000
 //assert
 
 //write_then_output_the_shifted_value : assert property (@(posedge clk) dm_di==32'b1 && dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && !is_signed && dm_be == 4'b1111 |=> dm_do==32'b1);
-write_then_output_the_shifted_value  : assert property (@(posedge clk) (dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && !is_signed )|=>(dm_do==$past(dm_di)));
+write_then_output_the_shifted_value  : assert property (@(posedge clk) (dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && !is_signed && dm_be == 4'b1111)|=>(dm_do==$past(dm_di)));
+write_then_output_the_shifted_value_1100 : assert property (@(posedge clk) dm_di==32'b1 && dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && !is_signed && dm_be == 4'b1100 |=> dm_do==32'b1);
+write_then_output_the_shifted_value_0011 : assert property (@(posedge clk) dm_di==32'b1 && dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && !is_signed && dm_be == 4'b0011 |=> dm_do==32'b1);
+write_then_output_the_shifted_value_0001 : assert property (@(posedge clk) dm_di==32'b1 && dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && !is_signed && dm_be == 4'b0001 |=> dm_do==32'b1);
+write_then_output_the_shifted_value_0010 : assert property (@(posedge clk) dm_di==32'b1 && dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && !is_signed && dm_be == 4'b0010 |=> dm_do==32'b1);
+write_then_output_the_shifted_value_0100 : assert property (@(posedge clk) dm_di==32'b1 && dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && !is_signed && dm_be == 4'b0100 |=> dm_do==32'b1);
+write_then_output_the_shifted_value_1000 : assert property (@(posedge clk) dm_di==32'b1 && dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && !is_signed && dm_be == 4'b1000 |=> dm_do==32'b1);
 
 
 //assert: the most significant valid bit is 1 and the number is signed, the number should also be correct 
