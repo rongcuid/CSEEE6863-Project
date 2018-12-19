@@ -284,6 +284,37 @@ write_disable_doesnot_write: assert property (
 		!io_we
 	);
 
+   // integer num_changed;
+   // integer i;
+   reg 	   past_valid = 1'b0;
+   always @ (posedge clk)
+     past_valid <= 1'b1;
+
+   // always @ (posedge clk) begin : COUNT_CHANGE
+   //    num_changed = 0;
+   //    for (i = 0; i<256; i = i+1)
+   // 	num_changed = num_changed + (($changed(ram0.RAM[i]))?1:0);
+   //    at_most_one_write_0: assert property
+   // 	 (~past_valid or ($stable(ram0.RAM) or num_changed == 1));
+   // end
+   
+
+// at_most_one_write_1: assert property 
+//    (
+//     @(posedge clk)
+//     $stable(ram1.RAM) or changed == 1
+// );
+// at_most_one_write_2: assert property 
+//    (
+//     @(posedge clk)
+//     $stable(ram2.RAM) or changed == 1
+// );
+// at_most_one_write_3: assert property 
+//    (
+//     @(posedge clk)
+//     $stable(ram3.RAM) or changed == 1
+// );
+
 be_no_spurious_enable_0: assert property(@(posedge clk)!dm_be[0]|->!ram0.en);
 be_no_spurious_enable_1: assert property(@(posedge clk)!dm_be[1]|->!ram1.en);
 be_no_spurious_enable_2: assert property(@(posedge clk)!dm_be[2]|->!ram2.en);
@@ -332,4 +363,16 @@ write_then_output_the_shifted_signed_value_0100 : assert property (@(posedge clk
 
 write_then_output_the_shifted_signed_value_1000 : assert property (@(posedge clk) dm_di==32'h000000ff && dm_we &&  dm_addr >= 32'h10000000 && dm_addr < 32'h80000000 && is_signed && dm_be == 4'b1000 |=> dm_do==32'hffffffff);
 
+// Inspired by https://zipcpu.com/zipcpu/2018/07/13/memories.html
+//reg [WORD_DEPTH_LOG-1:0] f_addr;
+//
+//reg [7:0] f_data0;
+//initial f_data0 = ram0.RAM[f_addr];
+//
+//always @ (posedge clk) 
+//if (ram0.en&&ram0.we && ram0.addr==f_addr) f_data0 <= ram0.din;
+//
+//ram0_consistency: assert property (@(posedge clk) f_data0 == ram0.RAM[f_addr]);
+
 endmodule // mmu
+
